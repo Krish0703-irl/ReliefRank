@@ -1,0 +1,80 @@
+[
+  {
+    "message": "URGENT!! 4 of us stuck on terrace near St Marys church Pandanad. water till chest level, my grandmother 82 cant walk. call 9847012345 pls send boat",
+    "output": {
+      "people_count": 4,
+      "location_text": "near St Marys church Pandanad",
+      "water_level": "chest",
+      "phone": "9847012345",
+      "vulnerable": ["elderly", "disabled"],
+      "needs": ["rescue", "boat"],
+      "urgency_reason": "Chest-deep water, 82-year-old who cannot walk",
+      "confidence": {"people_count": 0.95, "location_text": 0.9, "water_level": 0.9, "phone": 0.95}
+    }
+  },
+  {
+    "message": "Please help my brother family in Aluva. 2 kids and pregnant wife. Ground floor fully under water they are on first floor. No phone charge left",
+    "output": {
+      "people_count": 4,
+      "location_text": "Aluva",
+      "water_level": "unknown",
+      "phone": null,
+      "vulnerable": ["child", "pregnant"],
+      "needs": ["rescue"],
+      "urgency_reason": "Ground floor flooded, pregnant woman and two children, phone dying",
+      "confidence": {"people_count": 0.6, "location_text": 0.7, "water_level": 0.4, "phone": 0.0}
+    }
+  },
+  {
+    "message": "Relief camp at Govt LP School Kuttanad needs drinking water and rice for about 150 people. Contact camp officer +91 94470 55821",
+    "output": {
+      "people_count": 150,
+      "location_text": "Govt LP School Kuttanad",
+      "water_level": "none",
+      "phone": "+91 94470 55821",
+      "vulnerable": [],
+      "needs": ["water", "food"],
+      "urgency_reason": "Camp supplies request, people are safe",
+      "confidence": {"people_count": 0.85, "location_text": 0.95, "water_level": 0.8, "phone": 0.95}
+    }
+  },
+  {
+    "message": "my father is dialysis patient, missed session 2 days, water knee deep in house. we are 3. no vehicle can come. 8547 223 901",
+    "output": {
+      "people_count": 3,
+      "location_text": null,
+      "water_level": "knee",
+      "phone": "8547 223 901",
+      "vulnerable": ["medical"],
+      "needs": ["rescue", "medical"],
+      "urgency_reason": "Dialysis patient has missed 2 days of treatment",
+      "confidence": {"people_count": 0.9, "location_text": 0.0, "water_level": 0.9, "phone": 0.9}
+    }
+  },
+  {
+    "message": "Forwarded: family on roof at Chengannur near KSRTC stand, water rising fast, 6 people including baby. Number 9895 330 214",
+    "output": {
+      "people_count": 6,
+      "location_text": "Chengannur near KSRTC stand",
+      "water_level": "roof",
+      "phone": "9895 330 214",
+      "vulnerable": ["child"],
+      "needs": ["rescue"],
+      "urgency_reason": "On roof with rising water and a baby",
+      "confidence": {"people_count": 0.9, "location_text": 0.9, "water_level": 0.95, "phone": 0.9}
+    }
+  },
+  {
+    "message": "Is anyone coming?? we are waiting since morning",
+    "output": {
+      "people_count": null,
+      "location_text": null,
+      "water_level": "unknown",
+      "phone": null,
+      "vulnerable": [],
+      "needs": ["rescue"],
+      "urgency_reason": "Waiting since morning, no details given",
+      "confidence": {"people_count": 0.0, "location_text": 0.0, "water_level": 0.0, "phone": 0.0}
+    }
+  }
+]
