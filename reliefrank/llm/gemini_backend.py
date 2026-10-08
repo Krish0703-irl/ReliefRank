@@ -20,6 +20,8 @@ class GeminiBackend(Backend):
 
     def __init__(self, model=None):
         self.model = model or setting("GEMINI_MODEL", "gemma-4-26b-a4b-it")
+        if not self.model.startswith("gemma-4-"):   # e.g. a placeholder "gemma-4"
+            self.model = "gemma-4-26b-a4b-it"
         self.timeout = setting("LLM_TIMEOUT_S", 120)
         self.api_key = read_env("GEMINI_API_KEY")
         if not self.api_key:

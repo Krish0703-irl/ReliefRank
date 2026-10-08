@@ -1,4 +1,4 @@
-"""check Gemma's output against the original message before code trusts it.
+"""Check Gemma's output against the original message before code trusts it.
 
 Why this file exists:
     A language model can "fill in" a plausible place or number that is not in the
@@ -66,7 +66,14 @@ def phone_in_message(phone10, message):
     return phone10 in re.sub(r"\D", "", message or "")
 
 
-def validate(extracted: dict, message: str) -> dict:
+def validate(extracted, message: str) -> dict:
+    """extracted: the dict from extract(), or a Case/Extraction object from models.py."""
+    if not isinstance(extracted, dict):
+        if hasattr(extracted, "to_dict"):
+            extracted = extracted.to_dict()
+        else:
+            from dataclasses import asdict
+            extracted = asdict(extracted)
     min_conf = setting("MIN_CONFIDENCE", 0.6)
     meta = extracted.get("_meta", {"ok": True})
     out = {k: v for k, v in extracted.items() if k != "_meta"}
