@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ReliefRank</title>
+  <!-- Leaflet is loaded from our own folder, not the internet, so it works offline -->
+  <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <aside class="panel">
+    <h1>ReliefRank</h1>
+    <p class="sub">Flood SOS triage</p>
+
+    <label for="paste">Paste rescue messages</label>
+    <textarea id="paste" placeholder="One message per line" disabled></textarea>
+    <button disabled>Rank messages</button>
+    <p class="note">Pasting goes live once the API is ready.</p>
+
+    <h2>Queue</h2>
+    <ol id="queue"></ol>
+  </aside>
+
+  <main id="map"></main>
+
+  <script src="vendor/leaflet/leaflet.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
