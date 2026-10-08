@@ -1,29 +1,3 @@
-// ---- Fake cases (same shape as the agreed case fields) ----
-// Later these come from GET /api/cases instead. Coordinates are placeholders
-// until P4's areas.json is ready.
-const FAKE_CASES = [
-  {
-    id: 1, score: 92, people_count: 6, vulnerable: true, trapped: true,
-    water_level: "roof", location_text: "Near St. Mary's church, Chengannur",
-    phone: "98xxxxxx01", confidence: 0.9, missing: [],
-    reasons: ["Trapped on roof", "Elderly person present", "6 people"],
-    lat: 9.3180, lng: 76.6110
-  },
-  {
-    id: 2, score: 64, people_count: 3, vulnerable: false, trapped: false,
-    water_level: "waist", location_text: "Aluva market road",
-    phone: "98xxxxxx02", confidence: 0.8, missing: [],
-    reasons: ["Water at waist level", "3 people"],
-    lat: 10.1004, lng: 76.3570
-  },
-  {
-    id: 3, score: 38, people_count: 2, vulnerable: false, trapped: false,
-    water_level: "ankle", location_text: "Kakkanad, near the bus stop",
-    phone: "", confidence: 0.6, missing: ["phone"],
-    reasons: ["Water rising", "No phone number"],
-    lat: 10.0159, lng: 76.3419
-  }
-];
 
 // ---- Colour by score: red = most urgent ----
 function colourFor(score) {
@@ -75,4 +49,7 @@ function drawCases(cases) {
   });
 }
 
-drawCases(FAKE_CASES);
+fetch("/api/cases")
+    .then((res) => res.json())
+    .then(drawCases)
+    .catch(() => alert("Can't reach the ReliefRank server. Start it with python run.py"));
