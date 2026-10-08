@@ -1,0 +1,23 @@
+[opening]
+Hello, I am calling from the flood relief control room. We received a message asking for help{about}. I need a few details so the rescue team can reach you.
+
+[ask:location_text]
+Where exactly are you? Please tell me the area, ward, road name or nearest landmark.
+
+[ask:people_count]
+How many people are with you right now?
+
+[ask:vulnerable]
+Is anyone elderly, a child or baby, pregnant, injured, bedridden, or in need of medicine?
+
+[ask:trapped]
+Can you move to higher ground or upstairs, or are you trapped?
+
+[ask:water_level]
+How high is the water around you right now: ankle, knee, waist, chest, or near the roof?
+
+[ask:phone]
+What phone number can the rescue team call to reach you?
+
+[closing]
+Thank you. I am passing these details to the rescue team now. Stay on the highest floor you can reach and save your phone battery.

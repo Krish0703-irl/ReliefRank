@@ -1,0 +1,125 @@
+{
+  "note": "Synthetic messages written by the team for testing. Not real people. Phone numbers are placeholders in the 98470001xx range.",
+  "messages": [
+    {
+      "id": "m01",
+      "text": "URGENT 5 people stuck on roof near Pandanad church, water reached first floor, grandmother 80yrs cant walk. call 9847000101",
+      "critical": true,
+      "note": ""
+    },
+    {
+      "id": "m02",
+      "text": "My parents in Chengannur, near KSRTC stand. Water at chest level inside house. Father has heart problem, needs medicine. Pls help 9847000102",
+      "critical": true,
+      "note": ""
+    },
+    {
+      "id": "m03",
+      "text": "Family of 3 safe in Aluva relief camp, just informing relatives. no help needed",
+      "critical": false,
+      "note": ""
+    },
+    {
+      "id": "m04",
+      "text": "pls help my sister and her 2 kids, 1 is 6 months old. water rising fast. she is alone at home. her number 9847000104",
+      "critical": true,
+      "note": "no location -> needs a call"
+    },
+    {
+      "id": "m05",
+      "text": "Ranni market road - 12 people on top of school building since morning, no food no water. contact 9847000105",
+      "critical": true,
+      "note": ""
+    },
+    {
+      "id": "m06",
+      "text": "5 members on terrace at Pandanad near church!! one old lady. call 9847000101",
+      "critical": true,
+      "note": "duplicate of m01 (same phone)"
+    },
+    {
+      "id": "m07",
+      "text": "Need drinking water and food packets for camp at Thiruvalla govt school, around 200 people. not urgent rescue",
+      "critical": false,
+      "note": ""
+    },
+    {
+      "id": "m08",
+      "text": "Pregnant woman 8 months in Kuttanad, house surrounded by water waist level, boat needed. husband phone 9847000108",
+      "critical": true,
+      "note": ""
+    },
+    {
+      "id": "m09",
+      "text": "Anyone know if roads to Kalady are open? want to go to my home",
+      "critical": false,
+      "note": ""
+    },
+    {
+      "id": "m10",
+      "text": "Chalakudy near river bridge, 4 people in two storey house, water at ground floor knee level, we are ok for now but water is rising. 9847000110",
+      "critical": false,
+      "note": ""
+    },
+    {
+      "id": "m11",
+      "text": "help vellam kayari, 6 aalukal veettil, Aranmula temple near. 2 children. ph 9847000111",
+      "critical": true,
+      "note": "Manglish wording"
+    },
+    {
+      "id": "m12",
+      "text": "Volunteers with 3 boats available at Kozhencherry bridge, ready to go anywhere nearby. call 9847000112",
+      "critical": false,
+      "note": "offer of help, not a request"
+    },
+    {
+      "id": "m13",
+      "text": "my uncle is bedridden and alone in North Paravur, water entering the house, nobody answering his phone",
+      "critical": true,
+      "note": "no phone -> needs a call"
+    },
+    {
+      "id": "m14",
+      "text": "Angamaly - 2 families (8 people) moved to upstairs, water knee level downstairs. have food for 1 day. 9847000114",
+      "critical": false,
+      "note": ""
+    },
+    {
+      "id": "m15",
+      "text": "Diabetic patient needs insulin urgently, Muvattupuzha town, stuck at home, water up to chest outside. 9847000115",
+      "critical": true,
+      "note": ""
+    },
+    {
+      "id": "m16",
+      "text": "Please share rescue helpline numbers",
+      "critical": false,
+      "note": ""
+    },
+    {
+      "id": "m17",
+      "text": "Chengannur KSRTC side - my parents (old, father heart patient) still not rescued!!! 9847000102",
+      "critical": true,
+      "note": "duplicate of m02 (same phone)"
+    },
+    {
+      "id": "m18",
+      "text": "Edathua - house fully flooded, 3 of us in the attic, water near roof. 9847000118",
+      "critical": true,
+      "note": ""
+    },
+    {
+      "id": "m19",
+      "text": "Pathanamthitta town - power gone, water entering compound wall only, we are 4 people fine. 9847000119",
+      "critical": false,
+      "note": ""
+    },
+    {
+      "id": "m20",
+      "text": "Need life jackets for volunteers at Aluva Manappuram, around 10 volunteers",
+      "critical": false,
+      "note": ""
+    }
+  ]
+}

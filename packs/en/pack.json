@@ -1,0 +1,12 @@
+{
+  "name": "English",
+  "code": "en",
+  "version": "0.1.0",
+  "maintainer": "Radhakrishnan",
+  "files": [
+    "examples.json",
+    "areas.json",
+    "call_script.txt",
+    "tests.json"
+  ]
+}

@@ -1,0 +1,136 @@
+{
+  "note": "Approximate town-centre coordinates (lat, lon) for demo use. Verify before real-world use.",
+  "areas": [
+    {
+      "name": "Chengannur",
+      "aliases": [
+        "chengannur"
+      ],
+      "lat": 9.318,
+      "lon": 76.611
+    },
+    {
+      "name": "Pandanad",
+      "aliases": [
+        "pandanad"
+      ],
+      "lat": 9.333,
+      "lon": 76.58
+    },
+    {
+      "name": "Aranmula",
+      "aliases": [
+        "aranmula"
+      ],
+      "lat": 9.327,
+      "lon": 76.688
+    },
+    {
+      "name": "Ranni",
+      "aliases": [
+        "ranni"
+      ],
+      "lat": 9.386,
+      "lon": 76.785
+    },
+    {
+      "name": "Kozhencherry",
+      "aliases": [
+        "kozhencherry",
+        "kozhenchery"
+      ],
+      "lat": 9.336,
+      "lon": 76.71
+    },
+    {
+      "name": "Thiruvalla",
+      "aliases": [
+        "thiruvalla",
+        "tiruvalla"
+      ],
+      "lat": 9.3835,
+      "lon": 76.5741
+    },
+    {
+      "name": "Pathanamthitta",
+      "aliases": [
+        "pathanamthitta"
+      ],
+      "lat": 9.2648,
+      "lon": 76.787
+    },
+    {
+      "name": "Kuttanad",
+      "aliases": [
+        "kuttanad"
+      ],
+      "lat": 9.4,
+      "lon": 76.45
+    },
+    {
+      "name": "Edathua",
+      "aliases": [
+        "edathua",
+        "edathuva"
+      ],
+      "lat": 9.365,
+      "lon": 76.475
+    },
+    {
+      "name": "Aluva",
+      "aliases": [
+        "aluva",
+        "alwaye",
+        "manappuram"
+      ],
+      "lat": 10.1076,
+      "lon": 76.3516
+    },
+    {
+      "name": "North Paravur",
+      "aliases": [
+        "north paravur",
+        "paravur",
+        "n paravur"
+      ],
+      "lat": 10.143,
+      "lon": 76.224
+    },
+    {
+      "name": "Kalady",
+      "aliases": [
+        "kalady",
+        "kaladi"
+      ],
+      "lat": 10.1667,
+      "lon": 76.4333
+    },
+    {
+      "name": "Angamaly",
+      "aliases": [
+        "angamaly",
+        "angamali"
+      ],
+      "lat": 10.196,
+      "lon": 76.386
+    },
+    {
+      "name": "Chalakudy",
+      "aliases": [
+        "chalakudy",
+        "chalakudi"
+      ],
+      "lat": 10.3,
+      "lon": 76.333
+    },
+    {
+      "name": "Muvattupuzha",
+      "aliases": [
+        "muvattupuzha",
+        "moovattupuzha"
+      ],
+      "lat": 9.9894,
+      "lon": 76.579
+    }
+  ]
+}
