@@ -28,13 +28,22 @@ class LLMError(Exception):
     """The backend could not give a reply (server down, model missing, bad key, timeout)."""
 
 
+# config.py may use either name for the same setting
+ALIASES = {"MODEL": ["MODEL", "OLLAMA_MODEL"],
+           "LLM_TIMEOUT_S": ["LLM_TIMEOUT_S", "LLM_TIMEOUT_SECONDS"],
+           "LANGUAGE": ["LANGUAGE", "ACTIVE_PACK"]}
+
+
 def setting(name, default):
     """Read a variable from config.py, or return the default."""
     try:
         import config
     except ImportError:
         return default
-    return getattr(config, name, default)
+    for alias in ALIASES.get(name, [name]):
+        if hasattr(config, alias):
+            return getattr(config, alias)
+    return default
 
 
 def read_env(name):
