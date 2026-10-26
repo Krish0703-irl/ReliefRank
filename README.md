@@ -152,27 +152,60 @@ The video shows a batch of SOS messages being pasted in, the ranked queue and ma
 ### Prerequisites
 
 - Python 3.10+
-- [Ollama](https://ollama.com) installed and running
-- 8 GB+ RAM recommended for Gemma 4 E4B (use E2B on smaller machines)
+- **Either** a local model (offline) **or** a free cloud API key. One of the two:
+  - Offline: [Ollama](https://ollama.com) installed, plus 8 GB+ RAM for Gemma 4 E4B
+    (use E2B on smaller machines).
+  - Cloud: a free key from [build.nvidia.com](https://build.nvidia.com). No GPU needed.
 
 ### Installation
 
 ```bash
 git clone [repository-url]
 cd reliefrank
+python -m venv .venv && source .venv/bin/activate    # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-ollama pull gemma4:e4b
 ```
+
+### Choose how Gemma runs
+
+`BACKEND` in `config.py` decides. The default is `"auto"`: it uses the local model
+if one is running and falls back to the cloud API if not.
+
+**Option A — offline (the pitch).** Rescue data never leaves the laptop:
+
+```bash
+ollama pull gemma4:e4b
+ollama serve
+```
+
+**Option B — cloud API (no model on this machine).** Copy `.env.example` to `.env`
+and put a key in it:
+
+```env
+NVIDIA_API_KEY=nvapi-xxxxxxxx
+```
+
+That is all: `BACKEND = "auto"` (or `"cloud"`) will use it. Other hosts work from
+the same code — set `CLOUD_PROVIDER` in `config.py` to `nvidia`, `groq`,
+`openrouter`, `together`, `openai`, or `local` (a llama.cpp / LM Studio / vLLM
+server on your own machine), and put that provider's key in `.env`.
+
+To check a key and see which model names it can use:
+
+```bash
+python -m reliefrank.llm.cloud_backend
+```
+
+If the model name is wrong for your provider, set `CLOUD_MODEL` in `config.py`
+to one the command lists.
 
 ### Environment Variables
 
-Copy `.env.example` to `.env`. It is only needed for the optional Gemini backend:
+Everything lives in `.env` (gitignored). Only the key is required; the commented
+lines in `.env.example` let you override `config.py` without editing it.
 
-```env
-GEMINI_API_KEY=
-```
-
-Other settings (backend choice, model name, port) are variables in `config.py`.
+Other settings (backend choice, model name, port, scoring weights) are variables
+in `config.py`.
 
 ### Running the Project
 
@@ -184,9 +217,13 @@ Or open `run.py` in VS Code and press Ctrl+F5. The app opens at `http://localhos
 
 ### Usage
 
-1. Paste one or more SOS messages into the box and click **Triage**.
+1. Paste one or more SOS messages into the box (one per line) and click **Rank
+   messages** — or press **Load demo** to fill the box with the synthetic test set.
+   The badge at the top of the panel says which model is answering, and turns red
+   with the reason if none is reachable.
 2. Work from the top of the ranked queue. Click a case to see why it scored where it did.
-3. Open the **Needs a call** tab for incomplete cases and use the generated call script.
+3. Use the **Needs a call** filter for incomplete cases; the case panel carries the
+   generated call script. **Clear** empties the board between demo runs.
 4. To measure accuracy, open `eval/evaluate.py` and press Ctrl+F5 (or run `python eval/evaluate.py`). Results are saved to `eval/results.md`.
 
 ## Challenges and Learnings
