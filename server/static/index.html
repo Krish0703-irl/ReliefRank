@@ -13,16 +13,41 @@
     <h1>ReliefRank</h1>
     <p class="sub">Flood SOS triage</p>
 
-    <label for="paste">Paste rescue messages</label>
-    <textarea id="paste" placeholder="One message per line" disabled></textarea>
-    <button disabled>Rank messages</button>
-    <p class="note">Pasting goes live once the API is ready.</p>
+    <!-- Says which model is answering and whether it really replied -->
+    <div id="badge" class="badge badge-wait">
+      <span class="dot"></span><span id="badge-text">Checking the model…</span>
+    </div>
+    <p id="badge-error" class="badge-error" hidden></p>
 
-    <h2>Queue</h2>
+    <label for="paste">Paste rescue messages</label>
+    <textarea id="paste" placeholder="One message per line"></textarea>
+    <button id="rank">Rank messages</button>
+    <div class="row">
+      <button id="demo" class="secondary">Load demo</button>
+      <button id="clear" class="secondary">Clear</button>
+    </div>
+    <p id="status" class="note">Paste messages, one per line, then press Rank.</p>
+
+    <h2>Queue <span id="count" class="count"></span></h2>
+    <div class="filters" id="filters">
+      <button class="filter on" data-status="">All</button>
+      <button class="filter" data-status="new">New</button>
+      <button class="filter" data-status="needs call">Needs a call</button>
+      <button class="filter" data-status="assigned">Assigned</button>
+      <button class="filter" data-status="resolved">Done</button>
+    </div>
     <ol id="queue"></ol>
+    <p id="empty" class="note">No cases yet.</p>
   </aside>
 
-  <main id="map"></main>
+  <main class="main">
+    <div id="map"></div>
+    <!-- Slides up when a case in the queue is clicked -->
+    <section id="detail" class="detail" hidden>
+      <button id="detail-close" class="detail-close" aria-label="Close">&times;</button>
+      <div id="detail-body"></div>
+    </section>
+  </main>
 
   <script src="vendor/leaflet/leaflet.js"></script>
   <script src="app.js"></script>

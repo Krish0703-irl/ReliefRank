@@ -55,3 +55,18 @@ class OllamaBackend(Backend):
         if r.status_code != 200:
             raise LLMError(f"Ollama error {r.status_code}: {r.text[:300]}")
         return r.json()["message"]["content"]
+
+    def check(self) -> None:
+        """Is Ollama running here, and is this model downloaded?"""
+        try:
+            r = requests.get(f"{self.url}/api/tags", timeout=5)
+        except requests.RequestException as e:
+            raise LLMError(f"Ollama is not running at {self.url}. Start it: ollama serve") from e
+        if r.status_code != 200:
+            raise LLMError(f"Ollama error {r.status_code} at {self.url}")
+        tags = [m.get("name", "") for m in (r.json().get("models") or [])]
+        # "gemma4:e4b" should also match a tag listed as "gemma4:e4b-instruct-q4"
+        if not any(t == self.model or t.startswith(self.model) for t in tags):
+            have = ", ".join(tags) if tags else "no models at all"
+            raise LLMError(f"Model '{self.model}' is not downloaded (Ollama has: {have}). "
+                           f"Run: ollama pull {self.model}")

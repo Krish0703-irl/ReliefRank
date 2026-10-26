@@ -77,26 +77,92 @@ class Backend:
         reply = self.generate(prompt, schema)
         return reply, time.perf_counter() - start
 
+    def check(self) -> None:
+        """Raise LLMError if this backend cannot answer right now.
+
+        Building a backend only reads settings, so it succeeds even when the model
+        server is down. /api/health calls this so the badge on the page tells the
+        truth before a volunteer pastes 200 messages.
+        """
+        return None
+
+
+CLOUD_NAMES = ("cloud", "openai_compat", "nvidia", "groq",
+               "openrouter", "together", "openai", "local")
+
+
+def _auto_backend() -> "Backend":
+    """Offline first, cloud second. Used when BACKEND = "auto".
+
+    Tries local Ollama, because rescue data should stay on the laptop. If no model
+    is running there, falls back to the hosted API so the app still works on a
+    machine with no model downloaded.
+    """
+    problems = []
+    for name in ("ollama", "cloud"):
+        try:
+            backend = get_backend(name)
+            backend.check()
+            return backend
+        except (LLMError, ValueError) as e:
+            problems.append(f"{name}: {e}")
+    raise LLMError(
+        "No working backend.\n  " + "\n  ".join(problems)
+        + "\nEither run a local model (ollama serve) or add an API key to .env "
+          "(see .env.example)."
+    )
+
 
 def get_backend(name: str = None) -> Backend:
     """Build the backend chosen in config.BACKEND (or the name passed in)."""
     name = (name or setting("BACKEND", "ollama")).lower()
+    if name == "auto":
+        return _auto_backend()
     if name == "ollama":
         from reliefrank.llm.ollama_backend import OllamaBackend
         return OllamaBackend()
     if name in ("gemini_api", "gemini"):
         from reliefrank.llm.gemini_backend import GeminiBackend
         return GeminiBackend()
-    raise ValueError(f"Unknown BACKEND '{name}'. Use \"ollama\" or \"gemini_api\".")
+    if name in CLOUD_NAMES:
+        from reliefrank.llm.cloud_backend import CloudBackend
+        # "cloud" means "whatever CLOUD_PROVIDER says"; a provider name pins it.
+        provider = None if name in ("cloud", "openai_compat") else name
+        return CloudBackend(provider=provider)
+    raise ValueError(
+        f"Unknown BACKEND '{name}'. Use \"auto\", \"ollama\", \"cloud\" "
+        f"or a provider name ({', '.join(CLOUD_NAMES[2:])})."
+    )
 
 
-def backend_info(backend: Backend = None) -> dict:
-    """For GET /api/health and the "Local Gemma / Gemini API" badge."""
+def label_for(backend: Backend) -> str:
+    """Text for the badge on the page."""
+    if backend.offline:
+        return "Local Gemma" if backend.name == "ollama" else "Local model"
+    if backend.name.startswith("cloud:"):
+        return f"{backend.name.split(':', 1)[1].title()} cloud"
+    return "Gemini API"
+
+
+def backend_info(backend: Backend = None, verify: bool = False) -> dict:
+    """For GET /api/health and the badge on the page.
+
+    verify=True actually calls the model, so "ready" means ready. It costs one
+    tiny request, so the page asks for it once on load, not on every poll.
+    """
+    chosen = setting("BACKEND", "ollama")
     try:
         backend = backend or get_backend()
     except (LLMError, ValueError) as e:
-        return {"backend": setting("BACKEND", "ollama"), "model": None,
-                "offline": None, "ready": False, "error": str(e)}
-    label = "Local Gemma" if backend.offline else "Gemini API"
-    return {"backend": backend.name, "model": backend.model, "offline": backend.offline,
-            "label": label, "ready": True, "error": None}
+        return {"backend": chosen, "model": None, "offline": None, "label": "No model",
+                "ready": False, "verified": False, "error": str(e)}
+
+    info = {"backend": backend.name, "model": backend.model, "offline": backend.offline,
+            "label": label_for(backend), "ready": True, "verified": False, "error": None}
+    if verify:
+        try:
+            backend.check()
+            info["verified"] = True
+        except LLMError as e:
+            info.update(ready=False, verified=True, error=str(e))
+    return info

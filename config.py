@@ -29,18 +29,38 @@ def _load_env_file(path: Path) -> None:
 _load_env_file(ROOT_DIR / ".env")
 
 # ---------- Gemma backend ----------
-BACKEND = "ollama"                      # "ollama" (offline) or "gemini" (API)
+# "auto"   try the local model first, fall back to the cloud API  <- easiest
+# "ollama" local Gemma only, works with Wi-Fi off (the pitch)
+# "cloud"  hosted API only, for a laptop with no model downloaded
+# "gemini" Google's Gemini/Gemma API (older path, kept for comparison)
+# Any of these four can also be set in .env instead of edited here.
+BACKEND = os.environ.get("BACKEND", "auto")
 OLLAMA_URL = "http://localhost:11434"
 OLLAMA_MODEL = "gemma4:e4b"             # switch to the E2B tag if E4B is slow
-GEMINI_MODEL = "gemma-4"                # confirm exact model name
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")   # set in .env, never here
 LLM_TIMEOUT_SECONDS = 60
 LLM_RETRIES = 1                         # retry broken JSON once
+
+# ---------- Cloud backend (used by BACKEND = "cloud" or "auto") ----------
+# Pick a host, put its key in .env, done. See reliefrank/llm/cloud_backend.py
+# for the full list: nvidia, groq, openrouter, together, openai, local.
+CLOUD_PROVIDER = os.environ.get("CLOUD_PROVIDER", "nvidia")   # free key: build.nvidia.com
+CLOUD_MODEL = os.environ.get("CLOUD_MODEL", "")      # "" = provider's default Gemma model
+CLOUD_BASE_URL = os.environ.get("CLOUD_BASE_URL", "")  # "" = the provider's normal URL
+# Which .env line holds the key depends on the provider:
+#   nvidia -> NVIDIA_API_KEY, groq -> GROQ_API_KEY, openrouter -> OPENROUTER_API_KEY
+#   or CLOUD_API_KEY works for any of them.
+# To see the model names your key can use:
+#   python -m reliefrank.llm.cloud_backend
+
+# ---------- Gemini backend (optional) ----------
+GEMINI_MODEL = "gemma-4"                # confirm exact model name
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")   # set in .env, never here
 
 # ---------- Server ----------
 HOST = "127.0.0.1"
 PORT = 8000
-OPEN_BROWSER = True
+# OPEN_BROWSER=0 in .env for a headless run (the page is still served).
+OPEN_BROWSER = os.environ.get("OPEN_BROWSER", "1").lower() not in ("0", "false", "no")
 
 # ---------- Validation ----------
 MIN_CONFIDENCE = 0.5                    # below this, location/phone counts as missing
