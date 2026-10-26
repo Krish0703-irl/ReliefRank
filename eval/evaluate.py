@@ -23,7 +23,7 @@ PACK = "en"
 TOP_N = 10
 # "module:function". Change these if the function names in the repo differ.
 EXTRACT_FN = "reliefrank.extract:extract"   # text -> dict of case fields
-SCORE_FN = "reliefrank.score:score"         # case dict -> number, or (number, reasons), or dict with "score"
+SCORE_FN = "reliefrank.score:score_case"    # Case -> (number, reasons); see call_score() below
 FIELDS = ["people_count", "vulnerable", "trapped", "location_text", "phone"]
 WRITE_RESULTS = True
 # -----------------------------------------------------------------------------
@@ -46,6 +46,26 @@ def call_extract(fn, text):
     elif hasattr(out, "dict"):          # pydantic v1
         out = out.dict()
     return out or {}
+
+
+def to_case(fields, message_id, text):
+    """Extraction dict -> a real Case, exactly as pipeline.py builds one.
+
+    score_case() reads Case attributes (and message_ids for the repeat bonus),
+    so the eval must hand it the same object the app would.
+    """
+    from reliefrank.models import Case, Extraction, Message
+    from reliefrank import store
+    msg = Message(message_id=message_id, text=text, received_at=store.now_iso())
+    return Case.from_message("eval_" + message_id, msg, Extraction.from_dict(fields))
+
+
+def call_score(fn, fields, message_id, text):
+    """Works whether the scorer takes a Case or a plain dict."""
+    try:
+        return fn(to_case(fields, message_id, text))
+    except (AttributeError, TypeError):
+        return fn(fields)
 
 
 def to_score(out):
@@ -114,7 +134,7 @@ def main():
         if case is None:
             case = call_extract(extract, m["text"])
         try:
-            s = to_score(score(case))
+            s = to_score(call_score(score, case, m["id"], m["text"]))
         except Exception as e:
             failures.append(f"{m['id']}: scorer error: {e}")
             s = 0.0
