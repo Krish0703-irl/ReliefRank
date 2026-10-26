@@ -3,12 +3,16 @@
 Messages go through reliefrank.pipeline (extract -> validate -> geo -> dedupe ->
 score -> store); this file only turns HTTP requests into pipeline/store calls.
 
-    GET   /api/health            backend, model, language pack, online/offline
+    GET   /api/health?verify=1   backend, model, language pack, online/offline
+                                 verify=1 actually calls the model, so "ready" is true
+    GET   /api/demo              the synthetic demo messages, for the demo button
     POST  /api/messages          {"text": "one message per line"} -> cases touched
+    DELETE /api/cases            empty the board between demo runs
     GET   /api/cases?status=     cases, highest score first ("needs call" works too)
     GET   /api/cases/{case_id}   one case with reasons, messages and call script
     PATCH /api/cases/{case_id}   {"status": "assigned" | "resolved" | ...}
 """
+import json
 import socket
 from pathlib import Path
 
@@ -66,9 +70,29 @@ def internet_up():
 
 
 @app.get("/api/health")
-def health():
-    info = backend_info() if backend_info else {"backend": config.BACKEND}
+def health(verify: bool = False):
+    """verify=1 sends one tiny request to the model, so the badge cannot lie."""
+    if backend_info:
+        try:
+            info = backend_info(verify=verify)
+        except TypeError:                       # older base.py without verify
+            info = backend_info()
+    else:
+        info = {"backend": config.BACKEND}
     return {"status": "ok", "pack": config.ACTIVE_PACK, "online": internet_up(), **info}
+
+
+@app.get("/api/demo")
+def demo_messages():
+    """The team's synthetic test messages, so the demo needs no copy-paste."""
+    try:
+        raw = json.loads(config.DEMO_MESSAGES_PATH.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as e:
+        raise HTTPException(404, f"Could not read demo messages: {e}")
+    items = raw.get("messages", raw) if isinstance(raw, dict) else raw
+    texts = [m if isinstance(m, str) else (m.get("text") or m.get("message") or "")
+             for m in items]
+    return {"messages": [t for t in texts if t.strip()]}
 
 
 @app.post("/api/messages")
@@ -102,6 +126,13 @@ def change_status(case_id: str, body: StatusChange):
     if case is None:
         raise HTTPException(404, f"No case {case_id}")
     return to_json(case, detail=True)
+
+
+@app.delete("/api/cases")
+def clear_cases():
+    """Wipe the board. Used by the Clear button between demo runs."""
+    store.clear_all()
+    return {"cleared": True}
 
 
 # Serve index.html, app.js, style.css and Leaflet. Must come AFTER the /api routes.

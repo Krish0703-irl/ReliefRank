@@ -83,3 +83,152 @@ button:disabled { opacity: 0.4; cursor: not-allowed; }
 @media (max-width: 700px) {
   body { grid-template-columns: 1fr; grid-template-rows: auto 60vh; }
 }
+
+/* ---------------------------------------------------------------
+   Added when the page was wired to the real API: model badge,
+   buttons, status filters, queue rows and the case detail panel.
+   --------------------------------------------------------------- */
+
+/* The map and the detail panel share the right-hand column */
+.main { position: relative; overflow: hidden; }
+#map { height: 100%; width: 100%; }
+
+/* ---- Which model is answering ---- */
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  margin-bottom: 16px;
+  border: 1px solid var(--line);
+  font-size: 0.85rem;
+}
+.badge .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--muted); flex: none; }
+.badge-ok   { border-color: #1f7a3d; }
+.badge-ok   .dot { background: #1f7a3d; }
+.badge-bad  { border-color: #c8102e; }
+.badge-bad  .dot { background: #c8102e; }
+.badge-wait .dot { background: #d4a017; }
+.badge-error {
+  margin: -10px 0 16px;
+  padding: 8px 10px;
+  background: #fdf1f1;
+  border-left: 3px solid #c8102e;
+  font-size: 0.8rem;
+  white-space: pre-wrap;        /* backend errors come with setup steps on their own lines */
+}
+
+/* ---- Buttons ---- */
+.row { display: flex; gap: 8px; }
+button.secondary {
+  background: var(--panel);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  font-weight: 500;
+}
+button.secondary.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+.note.warn { color: #9c2a1a; }
+p.warn { color: #9c2a1a; font-size: 0.85rem; }
+
+/* ---- Status filters ---- */
+.filters { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 6px; }
+button.filter {
+  width: auto;
+  margin: 0;
+  padding: 4px 9px;
+  background: var(--panel);
+  color: var(--muted);
+  border: 1px solid var(--line);
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+button.filter.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+.count { color: var(--muted); font-weight: 400; font-size: 0.9rem; }
+
+/* ---- Queue rows ---- */
+#queue li { align-items: flex-start; }
+#queue li.on { background: var(--water); }
+.who { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.who small { color: var(--muted); font-size: 0.8rem; }
+.tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.tag {
+  padding: 1px 6px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.tag-call { border-color: #c8102e; color: #c8102e; }
+.tag-ok { border-color: #1f7a3d; color: #1f7a3d; }
+.score.big { min-width: 48px; font-size: 1.3rem; padding: 10px 0; }
+
+/* ---- One case, in full: slides over the map ---- */
+.detail {
+  position: absolute;
+  inset: auto 0 0 0;
+  /* Leaflet's own panes sit at z-index 400-800, so the panel must clear them */
+  z-index: 1100;
+  max-height: 72%;
+  overflow-y: auto;
+  padding: 18px 20px 24px;
+  background: var(--panel);
+  border-top: 2px solid var(--ink);
+  box-shadow: 0 -4px 16px rgba(28, 43, 54, 0.15);
+}
+.detail-close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  width: auto;
+  margin: 0;
+  padding: 2px 8px;
+  background: none;
+  color: var(--muted);
+  font-size: 1.4rem;
+  line-height: 1;
+}
+.detail h3 {
+  margin: 18px 0 6px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+.detail-head { display: flex; gap: 12px; align-items: center; }
+.detail-head small { display: block; color: var(--muted); }
+
+.reasons { margin: 0; padding-left: 20px; }
+.reasons li { padding: 1px 0; }
+
+.fields { border-collapse: collapse; width: 100%; max-width: 520px; }
+.fields th {
+  text-align: left;
+  font-weight: 600;
+  width: 130px;
+  padding: 3px 8px 3px 0;
+  vertical-align: top;
+}
+.fields td { padding: 3px 0; color: var(--muted); }
+
+.script {
+  margin: 0;
+  padding: 10px 12px;
+  background: var(--water);
+  border-left: 3px solid var(--ink);
+  font: inherit;
+  font-size: 0.85rem;
+  white-space: pre-wrap;
+}
+.detail blockquote {
+  margin: 0 0 8px;
+  padding: 8px 12px;
+  background: #f6f8f9;
+  border-left: 3px solid var(--line);
+  font-size: 0.88rem;
+}
+.statuses button { width: auto; flex: 1; padding: 7px 4px; font-size: 0.8rem; }
+
+@media (max-width: 700px) {
+  .detail { max-height: 85%; }
+}
